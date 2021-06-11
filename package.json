@@ -1,0 +1,12 @@
+{
+  "name": "unicorn-stt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run start --prefix server",
+    "build": "npm run build --prefix client"
+  },
+  "author": "",
+  "license": "ISC"
+}
