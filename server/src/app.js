@@ -10,13 +10,6 @@ const expressStaticGzip = require ('express-static-gzip');
 
 var cors = require("cors");
 app.use(cors());
-// app.use(expressStaticGzip('../../client/build', {
-// 	enableBrotli: true,
-// 	orderPreference: ['br', 'gz']
-// }));
-// app.get('*', (_, res) => {
-// 	res.sendFile(path.resolve('../', 'client', 'build', 'index.html'));
-// });2
 app.use(express.static('../client/build'));
 
 const server = require("http").createServer(app);
@@ -35,7 +28,6 @@ const speechClient = new speech.SpeechClient(); // Creates a client
 //=================== SOCKET SERVICE =================
 
 io.of("/api").on("connection", function (client) {
-
 	console.log("Client Connected to server");
 	let recognizeStream = null;
 

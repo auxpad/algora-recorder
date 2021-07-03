@@ -15,7 +15,8 @@ const constraints = {
 	video: false
 };
 let wholeStringTranscription = ''
-const socket = socketIOClient(`http://localhost:8080/api`); // TODO: Node server
+const BASE_URL = process.env.REACT_APP_URL || `http://localhost:8080`
+const socket = socketIOClient(`${BASE_URL}/api`); // TODO: Node server
 
 
 //================= SOCKET IO =================
@@ -82,7 +83,16 @@ class Sttcomponent extends Component {
 		context = new AudioContext({
 			latencyHint: 'interactive',
 		});
+
+
 		processor = context.createScriptProcessor(bufferSize, 1, 1);
+		//* ^ Here is where the problem starts. createScriptProcessor is deprecated.
+		//TODO: Try to read through the client-side code and see if you can retrofit it with an updated audio recording logic.
+		//* Mozilla recommends AudioWorkletNode
+		//* https://developer.mozilla.org/en-US/docs/Web/API/ScriptProcessorNode
+
+
+
 		processor.connect(context.destination);
 		context.resume();
 
@@ -223,7 +233,6 @@ export default Sttcomponent;
 
 function microphoneProcess(e) {
 	var left = e.inputBuffer.getChannelData(0);
-	// socket.emit('binaryData', left);
 	var left16 = downsampleBuffer(left, 44100, 16000)
 	socket.emit('binaryData', left16);
 }
